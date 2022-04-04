@@ -30,26 +30,14 @@ if (tableContainer) {
     setData();
 }
 
-//var newRowButton= document.getElementById('')
-
-const params = new Proxy(new URLSearchParams(window.location.search), {
-    get: (searchParams, prop) => searchParams.get(prop),
-});
-let id = params.id; // "some_value"
-if (id) {
-    const readData = productData.find(product => product.id === parseInt(id, 10));
-    if (readData && readData.id) {
-        document.getElementById('read-name').innerHTML = readData.name;
-        document.getElementById('read-desc').innerHTML = readData.description;
-        document.getElementById('read-price').innerHTML = readData.price;
-    }
-}
-
+/**
+ * Set initial data in table
+ */
 function setData() {
     tableContainer.innerHTML = '';
     const tableHead = document.createElement('tr');
     tableHead.setAttribute('class', 'header')
-    const theadData = `<th>ID</th>
+    const theadData = `<th>S.No</th>
     <th>Name</th>
     <th>Description</th>
     <th>Price</th>
@@ -60,22 +48,23 @@ function setData() {
     productData.forEach((product, index) => {
         var newRow = document.createElement('tr');
         //passing HTML as template string
-        let trData = `<td>${product.id}</td>
-        <td>${product.name}</td>
-        <td>${product.description}</td>
-        <td>${product.price}</td>
+        let trData = `<td>${index+1}</td>
+        <td><input id="dataName${product.id}" value="${product.name}"></input></td>
+        <td><input id="dataDescription${product.id}" value="${product.description}"></input></td>
+        <td><input id="dataPrice${product.id}" value="${product.price}"></input></td>
         <td>
-        <button class="button1 edit-button">Edit</button>
-            <button class="button1 delete-button" onclick="deleteData(${index})">Delete</button>
+        <a class="button1 read-button" href="read.html?id=${product.id}">Read</a>
+        <button class="button1 delete-button" onclick="deleteData(${index})">Delete</button>
         </td>`
 
         //checking if it's last index
         if (index === productData.length - 1) {
-            trData = `<td>${product.id}</td>
-        <td>${product.name}</td>
-        <td>${product.description}</td>
-        <td>${product.price}</td>
-        <td> <button class="button1 edit-button">Edit</button>
+            trData = `<td>${index+1}</td>
+            <td><input id="dataName${product.id}" value="${product.name}"></input></td>
+            <td><input id="dataDescription${product.id}" value="${product.description}"></input></td>
+            <td><input id="dataPrice${product.id}" value="${product.price}"></input></td>
+            <td>
+            <a class="button1 read-button" href="read.html?id=${product.id}">Read</a>
             <button class="button1 delete-button" onclick="deleteData(${index});">Delete</button>
             <button id="create-new-product" class="new-button button1" onclick="newRow(${index});">Create new product</button>
         </td>`
@@ -87,10 +76,14 @@ function setData() {
     )
 }
 
+/**
+ * When user clicks on 'add new product'
+ * New row is created and added to the table.
+ * @param {*} index
+ */
 function newRow(index) {
     var newRow = document.createElement('tr');
 
-    //tableContainer.insertRow(index+1);
     let trData = `<td>${productData.length + 1}</td>
         <td><input id="dataName"></input></td>
         <td><input id="dataDescription"></input></td>
@@ -103,6 +96,9 @@ function newRow(index) {
     document.getElementById("create-new-product").remove();
 }
 
+/**
+ * When user clicks on save button initial data is updated
+ */
 function saveData() {
     let newData = {
         id: productData.length + 1,
@@ -114,8 +110,14 @@ function saveData() {
     setData();
 }
 
-
+/**
+ * when user clicks on delete data
+ * @param {*} index
+ */
 function deleteData(index) {
-    alert(`Are you sure you want to delete row number ${index + 1}`)
+    if (confirm(`Are you sure you want to delete row number ${index + 1}`) == true) {
+        productData.splice(index, 1);
+        setData();
+    }
 
 }
