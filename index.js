@@ -115,9 +115,12 @@ function saveData() {
  * @param {*} index
  */
 function deleteData(index) {
+    if(productData.length<=1){
+        alert("Cant delete this row since this is only last row left")
+    }else{
     if (confirm(`Are you sure you want to delete row number ${index + 1}`) == true) {
         productData.splice(index, 1);
         setData();
-    }
+    }}
 
 }

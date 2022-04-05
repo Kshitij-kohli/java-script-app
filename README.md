@@ -40,3 +40,28 @@ function setData(){
 }
 ```
 
+```bash
+function newRow(index){
+1. Creates a new row using document.createElement('tr');
+2. New row is appended in table.
+3. Save button and cancel button are available to save or
+   cancel adding items in new row.
+4. Create new product button is removed.
+}
+```
+
+```bash
+function saveData() {
+1. Saves data and adds it to the table.
+2. Interacts with DOM to fetch data entered by user using
+   document.getElementById("dataName").value
+3. Display new updated data by calling setData()
+}
+```
+
+```bash
+function deleteData(index) {
+1. Deletes current row and updates index dynamically.
+2. Prevents user to delete row if it is the only one last row remaining.
+}
+
